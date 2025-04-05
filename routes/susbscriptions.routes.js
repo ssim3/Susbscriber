@@ -1,0 +1,21 @@
+import { Router } from "express";
+
+const subscriptionRouter = Router();
+
+subscriptionRouter.get('/', (req, res) => {
+  res.send({title: "GET all subscriptions"});
+})
+
+subscriptionRouter.get('/:id', (req, res) => {
+  res.send({title: "GET subscription details"});
+})
+
+subscriptionRouter.post('/', (req, res) => {
+  res.send({title: "POST subscription details"});
+})
+
+subscriptionRouter.put('/:id', (req, res) => {
+  res.send({title: "PUT subscription details"});
+})
+
+export default subscriptionRouter;
