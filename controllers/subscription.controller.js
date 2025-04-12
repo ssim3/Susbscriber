@@ -63,3 +63,30 @@ export const updateSubscription = async (req, res, next) => {
   }
 
 }
+
+export const deleteSubscripton = async (req, res, next) => {
+
+  try {
+
+    const subscription = await Subscription.findById(req.params.id);
+
+    if (!subscription) {
+      const error = new Error("Subscription not found!");
+      error.status = 404;
+      throw error;      
+    }
+
+    if (req.user.id != subscription.user) {
+      const error = new Error("Unauthorized");
+      error.status = 401;
+      throw error;
+    }
+
+    await subscription.deleteOne();
+    res.status(200).json({ status: 200, message: "resource deleted successfully" });
+
+  } catch (error) {
+    next(error);
+  }
+
+}
