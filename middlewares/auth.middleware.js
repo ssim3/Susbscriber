@@ -16,7 +16,7 @@ const authorizeAdmin = async (req, res, next) => {
     // This basically reverses our jwt.sign that we did on sign up. The token is used to get the users ID.
     const decoded = jwt.verify(token, JWT_SECRET);
 
-    // Verify if user is admin
+    // Verify if user is admin by getting isAdmin property from token
     const isAdmin = decoded.isAdmin;
 
     if (!isAdmin) {
