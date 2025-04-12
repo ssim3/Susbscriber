@@ -24,13 +24,12 @@ export const signUp = async (req, res, next) => {
       throw error;
     }
 
-    // Hash password
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Create new user
     const newUsers = await User.create([{ name, email, password: hashedPassword }], { session });
-    const token = jwt.sign({ userId : newUsers[0]._id}, JWT_SECRET, { expiresIn : JWT_EXPIRES_IN })
+    const token = jwt.sign({ userId : newUsers[0]._id, isAdmin : newUsers[0].isAdmin }, JWT_SECRET, { expiresIn : JWT_EXPIRES_IN })
 
     await session.commitTransaction();
     session.endSession();
@@ -47,6 +46,7 @@ export const signUp = async (req, res, next) => {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
+    // Hash password
     next(error);
   }
 
