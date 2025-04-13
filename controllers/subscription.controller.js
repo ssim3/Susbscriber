@@ -43,18 +43,21 @@ export const updateSubscription = async (req, res, next) => {
 
     const subscription = await Subscription.findById(req.params.id);
 
+    // Verify that subscription exists
     if (!subscription) {
       const error = new Error("Subscription not found!");
       error.status = 404;
       throw error;      
     }
 
+    // Verify that user making the request is the creator of the subscription
     if (req.user.id != subscription.user) {
       const error = new Error("Unauthorized");
       error.status = 401;
       throw error;
     }
 
+    // Updates subscription
     await subscription.updateOne({ ...req.body });
     res.status(200).json({ status: 200, data: subscription });
 
@@ -70,18 +73,21 @@ export const deleteSubscripton = async (req, res, next) => {
 
     const subscription = await Subscription.findById(req.params.id);
 
+    // Verify that subscription exists
     if (!subscription) {
       const error = new Error("Subscription not found!");
       error.status = 404;
       throw error;      
     }
 
+    // Verify that user making the request is the creator of the subscription
     if (req.user.id != subscription.user) {
       const error = new Error("Unauthorized");
       error.status = 401;
       throw error;
     }
 
+    // Deletes subscription
     await subscription.deleteOne();
     res.status(200).json({ status: 200, message: "resource deleted successfully" });
 
